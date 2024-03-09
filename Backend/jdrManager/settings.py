@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # My installed App,
     "account",
+    "warhammer",
     # Other App,
     "debug_toolbar",
     "rest_framework",
