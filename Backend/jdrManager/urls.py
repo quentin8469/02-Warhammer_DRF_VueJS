@@ -17,12 +17,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import permissions
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
     path("api-auth/", include("rest_framework.urls")),
-    path("account/", include("account.urls")),
-    path("warhammer/", include("warhammer.urls")),
+    path("api/v1/account/", include("account.urls")),
+    path("api/v1/warhammer/", include("warhammer.urls")),
 ]
