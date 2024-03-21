@@ -76,7 +76,7 @@ class DescriptionPersonnelleAdmin(admin.ModelAdmin):
         "id",
         "lieu_naissance",
         "signe_distinctif",
-        "Membre_famille",
+        "membre_famille",
         "description_perso",
         "player",
     )
