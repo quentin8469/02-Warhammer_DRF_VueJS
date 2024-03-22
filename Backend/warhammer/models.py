@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from account.models import CustomUser
 
 
@@ -216,6 +218,60 @@ class WarhammerCaracteristiqueActuelle(models.Model):
         verbose_name = "Caracteristique actuelle"
         verbose_name_plural = "Caracteristiques actuelles"
 
+    def encombrement_max(self):
+        """
+        Calcul l'encombrement maximal du personnage
+        """
+        return self.force * 100
+
+    def deplacement_round(self):
+        """
+        Calcul le deplacement par round en fonction du mouvement du personnage
+        return un dictionnaire
+        """
+        mouvement_round = {}
+        mouvement_round["Prudent"] = self.mouvement * 2
+        mouvement_round["Normale"] = self.mouvement * 4
+        mouvement_round["Rapide"] = self.mouvement * 16
+        return mouvement_round
+
+    def deplacement_tour(self):
+        """
+        Calcul le deplacement par tour en fonction du mouvement du personnage
+        return un dictionnaire
+        """
+        mouvement_tour = {}
+        mouvement_tour["Prudent"] = self.mouvement * 12
+        mouvement_tour["Normale"] = self.mouvement * 24
+        mouvement_tour["Rapide"] = self.mouvement * 96
+        return mouvement_tour
+
+    def deplacement_kmh(self):
+        """
+        Calcul le deplacement en km/h en fonction du mouvement du personnage
+        return un dictionnaire
+        """
+        mouvement_kmh = {}
+        mouvement_kmh["Prudent"] = self.mouvement * 0.75
+        mouvement_kmh["Normale"] = self.mouvement * 1.5
+        mouvement_kmh["Rapide"] = self.mouvement * 5.75
+        return mouvement_kmh
+
+    def initiative_attaque_list_tuple(self):
+        """
+        Calcul les initiatives en fonction du nombre d'attaque du personnage
+        return une liste de tuple avec le nom et l'initiative [(nom,initiative)]
+        """
+        init_list = [(self.initiative, self.player.nom)]
+        if self.nb_attaque > 1:
+            delta_init = self.initiative / self.nb_attaque
+            new_tuple_list = [(self.initiative, self.player.nom)]
+            for i in range(1, self.nb_attaque):
+                init_calk = int(new_tuple_list[-1][0] - delta_init)
+                new_tuple_list.append((init_calk, self.player.nom))
+            return new_tuple_list
+        return init_list
+
 
 class WarhammerPointDeBlessure(models.Model):
     """ """
@@ -228,6 +284,21 @@ class WarhammerPointDeBlessure(models.Model):
     class Meta:
         verbose_name = "Point de blessure"
         verbose_name_plural = "Points de blessures"
+
+    @receiver(post_save, sender=WarhammerCaracteristiqueActuelle)
+    def update_pdb_max(sender, instance, **kwargs):
+        """
+        Utilisation du signal post_save pour mettre à jour pdb_max après
+        la mise à jour des points de blessure du modèle CaracteristiqueActuelle.
+        Il faut tout de même créer l'objet PointDeBlessure au préalable.
+        """
+        pdb_max = instance.point_blessure
+        player = instance.player
+        point_de_blessure, _ = WarhammerPointDeBlessure.objects.get_or_create(
+            player=player
+        )
+        point_de_blessure.pdb_max = pdb_max
+        point_de_blessure.save()
 
 
 class WarhammerCompetence(models.Model):

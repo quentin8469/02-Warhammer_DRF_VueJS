@@ -72,9 +72,30 @@ class WarhammerBourseSerializers(serializers.ModelSerializer):
 class WarhammerCaracteristiqueActuelleSerializers(serializers.ModelSerializer):
     """Warhammer CaracteristiqueActuelle Serializers"""
 
+    encombrement_max = serializers.SerializerMethodField()
+    deplacement_round = serializers.SerializerMethodField()
+    deplacement_tour = serializers.SerializerMethodField()
+    deplacement_kmh = serializers.SerializerMethodField()
+    initiative_attaque_list_tuple = serializers.SerializerMethodField()
+
     class Meta:
         model = WarhammerCaracteristiqueActuelle
         fields = "__all__"
+
+    def get_encombrement_max(self, obj):
+        return obj.encombrement_max()
+
+    def get_deplacement_round(self, obj):
+        return obj.deplacement_round()
+
+    def get_deplacement_tour(self, obj):
+        return obj.deplacement_round()
+
+    def get_deplacement_kmh(self, obj):
+        return obj.deplacement_round()
+
+    def get_initiative_attaque_list_tuple(self, obj):
+        return obj.initiative_attaque_list_tuple()
 
 
 class WarhammerCaracteristiqueBaseSerializers(serializers.ModelSerializer):
@@ -112,9 +133,14 @@ class WarhammerEquipementSerializers(serializers.ModelSerializer):
 class WarhammerExperiencePersonnageSerializers(serializers.ModelSerializer):
     """Warhammer ExperiencePersonnage Serializers"""
 
+    xp_total = serializers.SerializerMethodField()
+
     class Meta:
         model = WarhammerExperiencePersonnage
         fields = "__all__"
+
+    def get_xp_total(self, obj):
+        return obj.xp_total()
 
 
 class WarhammerMagieSerializers(serializers.ModelSerializer):
@@ -152,9 +178,14 @@ class WarhammerPointDeBlessureSerializers(serializers.ModelSerializer):
 class WarhammerPointDeDestinSerializers(serializers.ModelSerializer):
     """Warhammer Point De Destin Serializers"""
 
+    pdd_total = serializers.SerializerMethodField()
+
     class Meta:
         model = WarhammerPointDeDestin
         fields = "__all__"
+
+    def get_pdd_total(self, obj):
+        return obj.pdd_total()
 
 
 class WarhammerSortilegeSerializers(serializers.ModelSerializer):

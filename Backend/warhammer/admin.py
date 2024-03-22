@@ -85,6 +85,7 @@ class DescriptionPersonnelleAdmin(admin.ModelAdmin):
 @admin.register(WarhammerCaracteristiqueBase)
 class CaracteristiqueBaseAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "mouvement",
         "capacite_combat",
         "capacité_tir",
@@ -128,6 +129,7 @@ class PlanCarriereAdmin(admin.ModelAdmin):
 @admin.register(WarhammerCaracteristiqueActuelle)
 class CaracteristiqueActuelleAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "mouvement",
         "capacite_combat",
         "capacité_tir",
