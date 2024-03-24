@@ -1,47 +1,41 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <!-- navbar -->
+  <nav>
+    <div class="container-fluid p-3 bg-dark text-white">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><router-link type="button" class="btn btn-primary" to="/jdrmanager">Accueil</router-link></li>
+                <li><a href="#" class="nav-link px-2 text-secondary">Mon Profil</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">Création de personnage</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">Création de campagne</a></li>
+            </ul>
+            <div class="text-end">
+                <a class="btn btn-warning" aria-current="page" href="#">Se déconnecter</a>
+                <a class="btn btn-outline-light me-2" aria-current="page" href="#">Se connecter</a>
+                <a class="btn btn-outline-light me-2" aria-current="page" href="#">S'inscrire</a>
+            </div>
+        </div>
     </div>
-  </header>
+  </nav>
+  <!-- END Header navbar -->
+  <RouterView />
 
-  <main>
-    <TheWelcome />
-  </main>
+  
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+
+<script>
+import { RouterView } from "vue-router";
+
+export default {
+  name: "App",
+
+
 }
+</script>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+<style>
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>

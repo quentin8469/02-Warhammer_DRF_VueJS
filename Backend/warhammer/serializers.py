@@ -24,17 +24,27 @@ from warhammer.models import (
 class WarhammerCampagneSerializers(serializers.ModelSerializer):
     """Warhammer Camapagne Serializers"""
 
+    maitre_du_jeu_username = serializers.SerializerMethodField()
+
     class Meta:
         model = WarhammerCampagne
         fields = "__all__"
+
+    def get_maitre_du_jeu_username(self, obj):
+        return obj.maitre_du_jeu.username if obj.maitre_du_jeu else None
 
 
 class WarhammerPlayerSerializers(serializers.ModelSerializer):
     """Warhammer Player Serializers"""
 
+    campagne_actuelle_nom = serializers.SerializerMethodField()
+
     class Meta:
         model = WarhammerPlayer
         fields = "__all__"
+
+    def get_campagne_actuelle_nom(self, obj):
+        return obj.campagne.nom_de_campagne if obj.campagne else None
 
 
 class WarhammerArmeContactSerializers(serializers.ModelSerializer):
