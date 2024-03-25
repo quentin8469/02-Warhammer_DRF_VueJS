@@ -1,5 +1,5 @@
-from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.response import Response
 from warhammer.models import (
     WarhammerCampagne,
     WarhammerPlayer,
@@ -91,12 +91,24 @@ class WarhammerCaracteristiqueActuelleViewSet(viewsets.ModelViewSet):
     queryset = WarhammerCaracteristiqueActuelle.objects.all()
     serializer_class = WarhammerCaracteristiqueActuelleSerializers
 
+    def get_queryset(self):
+        player_id = self.request.query_params.get("player")
+        if player_id:
+            return WarhammerCaracteristiqueActuelle.objects.filter(player_id=player_id)
+        return super().get_queryset()
+
 
 class WarhammerCaracteristiqueBaseViewSet(viewsets.ModelViewSet):
     """Warhammer Caracteristique Base API View"""
 
     queryset = WarhammerCaracteristiqueBase.objects.all()
     serializer_class = WarhammerCaracteristiqueBaseSerializers
+
+    def get_queryset(self):
+        player_id = self.request.query_params.get("player")
+        if player_id:
+            return WarhammerCaracteristiqueBase.objects.filter(player_id=player_id)
+        return WarhammerCaracteristiqueBase.objects.all()
 
 
 class WarhammerCompetenceViewSet(viewsets.ModelViewSet):
